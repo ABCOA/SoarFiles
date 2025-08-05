@@ -10,7 +10,6 @@ CLIENT_FILES_BASE_DIR = os.getcwd()
 OUTPUT_MANIFEST_PATH = os.path.join(CLIENT_FILES_BASE_DIR, 'client_manifest.json')
 # --- 配置部分结束 ---
 
-# *** 修正后的排除列表 ***
 EXCLUDE_PATHS = [
     os.path.normpath('.github/'),
     os.path.normpath('.git/'),
@@ -76,7 +75,12 @@ def generate_manifest(base_dir, output_file, client_version):
                 print(f"  错误处理文件 {relative_path}: {e}")
     
     try:
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        # *** 修正：确保父目录存在，处理文件名本身作为路径的情况 ***
+        output_dir = os.path.dirname(output_file)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        # *******************************************************
+        
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(manifest_data, f, indent=2, ensure_ascii=False)
         print(f"--- 成功生成清单文件: {output_file} (版本: {client_version}) ---")
