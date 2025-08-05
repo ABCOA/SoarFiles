@@ -34,7 +34,6 @@ jobs:
         python3 generate_manifest.py --version "$(date +'%Y%m%d%H%M%S')"
         
     - name: Commit and push manifest
-      if: steps.git-check.outputs.has_changes == 'true'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
