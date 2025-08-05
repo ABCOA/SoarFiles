@@ -6,6 +6,12 @@ import argparse
 CLIENT_FILES_BASE_DIR = os.getcwd() 
 OUTPUT_MANIFEST_PATH = os.path.join(CLIENT_FILES_BASE_DIR, 'client_manifest.json') 
 
+EXCLUDE_PATHS = [
+    'client_manifest.json', # 清单文件本身
+    'generate_manifest.py', # Python 脚本自身
+    '.github/'              # GitHub Actions 文件夹
+]
+
 def calculate_sha256(filepath):
     hasher = hashlib.sha256()
     with open(filepath, 'rb') as f:
@@ -28,10 +34,20 @@ def generate_manifest(base_dir, output_file, client_version):
         for file_name in files:
             full_path = os.path.join(root, file_name)
             
-            if full_path == output_file:
-                continue
-            
             relative_path = os.path.relpath(full_path, base_dir).replace("\\", "/")
+
+            should_exclude = False
+            for exclude_path in EXCLUDE_PATHS:
+                if exclude_path.endswith('/') and relative_path.startswith(exclude_path):
+                    should_exclude = True
+                    break
+                elif relative_path == exclude_path:
+                    should_exclude = True
+                    break
+            
+            if should_exclude:
+                print(f"  忽略文件: {relative_path}")
+                continue
             
             try:
                 file_size = os.path.getsize(full_path)
