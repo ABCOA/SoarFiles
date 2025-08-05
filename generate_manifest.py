@@ -2,7 +2,7 @@ import os
 import hashlib
 import json
 import argparse
-
+#change
 CLIENT_FILES_BASE_DIR = os.getcwd() 
 OUTPUT_MANIFEST_PATH = os.path.join(CLIENT_FILES_BASE_DIR, 'client_manifest.json') 
 
