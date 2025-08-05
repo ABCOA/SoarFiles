@@ -1,11 +1,6 @@
 {
-  "clientVersion": "20250805074941",
+  "clientVersion": "20250805082321",
   "files": [
-    {
-      "path": "assets/test.txt",
-      "size": 5,
-      "sha256": "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2"
-    },
     {
       "path": "assets/indexes/1.8.json",
       "size": 78494,
@@ -3625,6 +3620,11 @@
       "path": "assets/objects/b8/b88bd8618c05232a7287799ea9246ae12f5da9d5",
       "size": 14377,
       "sha256": "ec1a43d0bdb79f5146a39c2d8c6a7d3419a245add55b4988ff01ebd436d9ede6"
+    },
+    {
+      "path": "minecraft/SoarClient_special.jar",
+      "size": 32385028,
+      "sha256": "4e83f6f6b5f422401a78b473a48691cc96a76b2ef37a959ca6b474445039e525"
     },
     {
       "path": "minecraft/1.8.9.jar",
