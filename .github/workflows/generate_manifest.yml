@@ -1,0 +1,41 @@
+name: Auto Generate Client Manifest 
+
+on:
+  push:
+    branches:
+      - master #
+    paths:
+      - 'assets/**'
+      - 'java/**'
+      - 'libraries/**'
+      - 'minecraft/**'
+      - 'natives/**'
+      - 'client_manifest.json'
+      - 'generate_manifest.py' # 脚本本身有变动时也触发
+
+jobs:
+  generate-manifest:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 系统作为运行环境
+
+    steps:
+    - name: Checkout repository # 步骤1: 克隆仓库代码
+      uses: actions/checkout@v3
+
+    - name: Set up Python # 步骤2: 设置 Python 环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Generate client_manifest.json # 步骤3: 运行 Python 脚本
+      run: |
+        python3 generate_manifest.py --version "$(date +'%Y%m%d%H%M%S')"
+        
+    - name: Commit and push manifest # 步骤4: 提交并推送新的清单文件
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add client_manifest.json # 添加生成的新清单文件
+        git commit -m "Auto: Update client manifest" || true
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
