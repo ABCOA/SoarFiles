@@ -1,0 +1,7 @@
+IMPLEMENTOR="Azul Systems, Inc."
+IMPLEMENTOR_VERSION="Zulu8.82.0.21-CA-win64"
+JAVA_VERSION="1.8.0_432"
+OS_NAME="Windows"
+OS_VERSION="5.2"
+OS_ARCH="amd64"
+SOURCE=".:git:1bb70adff2cc"
