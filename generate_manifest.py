@@ -2,14 +2,18 @@ import os
 import hashlib
 import json
 import argparse
-#change
-CLIENT_FILES_BASE_DIR = os.getcwd() 
-OUTPUT_MANIFEST_PATH = os.path.join(CLIENT_FILES_BASE_DIR, 'client_manifest.json') 
+
+CLIENT_FILES_BASE_DIR = os.getcwd()
+OUTPUT_MANIFEST_PATH = os.path.join(CLIENT_FILES_BASE_DIR, 'client_manifest.json')
 
 EXCLUDE_PATHS = [
-    'client_manifest.json', # 清单文件本身
-    'generate_manifest.py', # Python 脚本自身
-    '.github/'              # GitHub Actions 文件夹
+    '.github/',              # GitHub Actions 文件夹
+    '.git/',                 # Git 仓库的隐藏文件夹
+    'generate_manifest.py',  # Python 脚本自身
+    'client_manifest.json',  # 清单文件本身
+    '.gitignore',            # .gitignore 文件
+    'README.md',             # README 文件
+    'LICENSE',               # 许可证文件
 ]
 
 def calculate_sha256(filepath):
@@ -29,11 +33,15 @@ def generate_manifest(base_dir, output_file, client_version):
     }
     
     print(f"--- 开始扫描目录: {base_dir} ---")
+    excluded_full_paths = [os.path.join(base_dir, p) for p in EXCLUDE_PATHS]
     
     for root, _, files in os.walk(base_dir):
+        current_relative_root = os.path.relpath(root, base_dir).replace("\\", "/") + "/"
+        if any(current_relative_root.startswith(ep) for ep in EXCLUDE_PATHS if ep.endswith('/')):
+            continue
+
         for file_name in files:
             full_path = os.path.join(root, file_name)
-            
             relative_path = os.path.relpath(full_path, base_dir).replace("\\", "/")
 
             should_exclude = False
@@ -44,7 +52,7 @@ def generate_manifest(base_dir, output_file, client_version):
                 elif relative_path == exclude_path:
                     should_exclude = True
                     break
-            
+
             if should_exclude:
                 print(f"  忽略文件: {relative_path}")
                 continue
@@ -63,6 +71,7 @@ def generate_manifest(base_dir, output_file, client_version):
                 print(f"  错误处理文件 {relative_path}: {e}")
     
     try:
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(manifest_data, f, indent=2, ensure_ascii=False)
         print(f"--- 成功生成清单文件: {output_file} (版本: {client_version}) ---")
