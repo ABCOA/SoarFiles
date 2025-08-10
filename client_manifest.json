@@ -1,5 +1,5 @@
 {
-  "clientVersion": "20250810125124",
+  "clientVersion": "20250810125310",
   "files": [
     {
       "path": "minecraft/1.8.9.jar",
@@ -3415,11 +3415,6 @@
       "path": "natives/META-INF/MANIFEST.MF",
       "size": 103,
       "sha256": "042210aa8de67ab9dfa1cd686aab41c3b658d5b85470c493d6518280c3ad4612"
-    },
-    {
-      "path": "assets/test.txt",
-      "size": 9,
-      "sha256": "dc27c73feb5462c5174389ebe6cb3674ffe253e0c318c96596869397ce4df66b"
     },
     {
       "path": "assets/indexes/1.8.json",
