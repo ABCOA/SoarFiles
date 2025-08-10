@@ -18,6 +18,8 @@ EXCLUDE_PATHS = [
     os.path.normpath('.gitignore'),
     os.path.normpath('README.md'),
     os.path.normpath('LICENSE'),
+    os.path.normpath('java/'),
+    os.path.normpath('assets/')
 ]
 
 def calculate_sha256(filepath):
